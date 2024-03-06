@@ -26,7 +26,7 @@ cif_modder -c path/to/cif -i "path/to/instructions.txt"
 ```
 
 - The instructions can also be read from a file.
-- Valid delimiters are `;`, `,`, and `\\n`.
+- Valid delimiters are `;`, `,`, and `\n`.
 
 List of currently recognized CIF keywords:
 `_cell_length_a`, `_cell_length_b`, `_cell_length_c`, `_cell_angle_alpha`, `_cell_angle_beta`, `_cell_angle_gamma`, `_cell_volume`
