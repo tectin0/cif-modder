@@ -7,7 +7,7 @@ use std::collections::HashMap;
 use rand::Rng;
 
 #[derive(PartialEq, Debug, Clone)]
-enum Operator {
+pub enum Operator {
     Add,
     Subtract,
     Multiply,
@@ -32,7 +32,7 @@ impl From<&str> for Operator {
 }
 
 #[derive(Debug, Clone)]
-struct Instruction {
+pub struct Instruction {
     keyword: String,
     operator: Operator,
     value_a: f64,
@@ -43,6 +43,15 @@ struct Instruction {
 const KEEP_PRECISION: bool = true;
 
 impl Instruction {
+    pub fn new(keyword: String, operator: Operator, value_a: f64, value_b: Option<f64>) -> Self {
+        Instruction {
+            keyword,
+            operator,
+            value_a,
+            value_b,
+        }
+    }
+
     fn apply(&self, cif_value: String) -> anyhow::Result<String> {
         let value = cif_value.remove_uncertainty_digits();
 
@@ -235,6 +244,24 @@ impl From<&str> for Instructions {
     }
 }
 
+impl From<Vec<Instruction>> for Instructions {
+    fn from(instructions: Vec<Instruction>) -> Self {
+        let mut map: HashMap<String, Vec<Instruction>> = HashMap::new();
+
+        for instruction in instructions {
+            let keyword = instruction.keyword.clone();
+
+            if let Some(instructions) = map.get_mut(&keyword) {
+                instructions.push(instruction);
+            } else {
+                map.insert(keyword, vec![instruction]);
+            }
+        }
+
+        Instructions(map)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -320,5 +347,25 @@ mod tests {
         let instruction = Instruction::from("a -- 2");
         let result = instruction.apply("1.0".to_string()).unwrap();
         assert!(result.parse::<f64>().unwrap() >= 1.0);
+    }
+
+    #[test]
+    fn test_new_instruction() {
+        let instruction = Instruction::new("_cell_length_a".to_string(), Operator::Add, 1.0, None);
+        assert_eq!(instruction.keyword, "_cell_length_a");
+        assert_eq!(instruction.operator, Operator::Add);
+        assert_eq!(instruction.value_a, 1.0);
+        assert_eq!(instruction.value_b, None);
+
+        assert_eq!(instruction.apply("1.0".to_string()).unwrap(), "2.0");
+
+        let instruction =
+            Instruction::new("_cell_length_a".to_string(), Operator::Subtract, 1.0, None);
+        assert_eq!(instruction.keyword, "_cell_length_a");
+        assert_eq!(instruction.operator, Operator::Subtract);
+        assert_eq!(instruction.value_a, 1.0);
+        assert_eq!(instruction.value_b, None);
+
+        assert_eq!(instruction.apply("1.0".to_string()).unwrap(), "0.0");
     }
 }

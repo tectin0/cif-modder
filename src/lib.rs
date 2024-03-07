@@ -11,7 +11,12 @@ use std::{
 use rand::{rngs::StdRng, SeedableRng};
 
 pub use arguments::Args;
+
+pub use instructions::Instruction;
 pub use instructions::Instructions;
+
+pub use instructions::Operator;
+
 pub use utilities::directory_content_from_path;
 
 use utilities::whitespace_between_two_values;
