@@ -4,7 +4,7 @@ Modify parameters in cif files
 # Usage
 
 ```sh
-cif-modder --cif path/to/cif --instructions \"_cell_length_a + 1; _cell_length_a * 2; _cell_length_b -- 5.00; 70 -- _cell_angle_alpha -- 120\"
+cif-modder --cif path/to/cif --instructions "_cell_length_a + 1; _cell_length_a * 2; _cell_length_b -- 5.00; 70 -- _cell_angle_alpha -- 120"
 ```
 
 - `path/to/cif` is the path to the CIF file or directory containing CIF files.
@@ -14,7 +14,7 @@ cif-modder --cif path/to/cif --instructions \"_cell_length_a + 1; _cell_length_a
 - `70 -- _cell_angle_alpha -- 120` sets the value to a random number between 70 and 120.
 
 ```sh
-cif-modder -c path/to/cif -i \"a + 1; a * 2; b -- 5.00; 70 -- alpha -- 120\"
+cif-modder -c path/to/cif -i "a + 1; a * 2; b -- 5.00; 70 -- alpha -- 120"
 ```
 
 - `a` and `b` are the same as `_cell_length_a` and `_cell_length_b`.
@@ -22,11 +22,11 @@ cif-modder -c path/to/cif -i \"a + 1; a * 2; b -- 5.00; 70 -- alpha -- 120\"
 - `-c` is the short form of `--cif`. `-i` is the short form of `--instructions`.
 
 ```sh
-cif_modder -c path/to/cif -i \"path/to/instructions.txt\"
+cif_modder -c path/to/cif -i "path/to/instructions.txt"
 ```
 
 - The instructions can also be read from a file.
-- Valid delimiters are `;`, `,`, and `\\n`.
+- Valid delimiters are `;`, `,`, and `\n`.
 
 List of currently recognized CIF keywords:
 `_cell_length_a`, `_cell_length_b`, `_cell_length_c`, `_cell_angle_alpha`, `_cell_angle_beta`, `_cell_angle_gamma`, `_cell_volume`
